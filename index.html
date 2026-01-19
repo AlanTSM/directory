@@ -1,0 +1,1051 @@
+<meta charset="UTF-8" /><meta content="width=device-width, initial-scale=1.0" name="viewport" /><title>Directorio de herramientas TSM</title><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" /><script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6"></script><script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const cards = document.querySelectorAll('.card');
+        const cardTitles = Array.from(cards).map(card => card.querySelector('h2').innerText);
+        const fuse = new Fuse(cardTitles, {
+            includeScore: true,
+            threshold: 0.3
+        });
+
+        // Tag filtering logic
+        const tags = document.querySelectorAll('.tag');
+        const clearTagsButton = document.getElementById('clearTags');
+        let selectedTags = new Set();
+
+        const tagCardMap = {
+            'Alineaciones': ['Alineaciones dinámicas', 'Creador de alineaciones', 'Generador de alineaciones', 'Validador de alineaciones'],
+            'Calculadoras': ['Calculadora de ingresos', 'Calculadora de salarios'],
+            'Herramientas staff': ['Actualizador de progresión', 'Comprobador de quinielas', 'Conversor de ratings de EA FC', 'Conversor de ratings de eFootball', 'Procesador de árbitros', 'Gestor de Fit', 'Gestor de traspasos', 'Preparación de partidos para simular', 'Preparación de temas de alineaciones', 'Spoilers para el foro'],
+            'Información': ['Central de datos', 'Buscador de jugadores', 'Comparador de equipos y mánagers', 'Consultor de enfrentamientos', 'Tasador de jugadores', 'Tutorial dinámico'],
+            'Páginas interactivas': ['Narrador dinámico']
+        };
+
+        function updateCardVisibility() {
+            const searchInput = document.getElementById('searchInput').value.toLowerCase();
+            const searchResults = searchInput ? fuse.search(searchInput).map(result => result.item) : cardTitles;
+
+            cards.forEach(card => {
+                const title = card.querySelector('h2').innerText.trim();
+                const matchesSearch = searchResults.includes(title);
+
+                // Si no hay etiquetas seleccionadas, mostrar todas las tarjetas que coincidan con la búsqueda
+                let matchesTag = selectedTags.size === 0;
+
+                // Si hay etiquetas seleccionadas, verificar si la tarjeta pertenece a alguna de ellas
+                if (selectedTags.size > 0) {
+                    matchesTag = false;
+                    for (let tag of selectedTags) {
+                        if (tagCardMap[tag] && tagCardMap[tag].includes(title)) {
+                            matchesTag = true;
+                            break;
+                        }
+                    }
+                }
+
+                card.style.display = (matchesSearch && matchesTag) ? 'block' : 'none';
+            });
+        }
+
+        // Search input handler
+        function filterCards() {
+            updateCardVisibility();
+        }
+
+        // Tag click handler
+        tags.forEach(tag => {
+            tag.addEventListener('click', () => {
+                const tagText = tag.textContent.trim();
+
+                if (selectedTags.has(tagText)) {
+                    selectedTags.delete(tagText);
+                    tag.classList.remove('bg-blue-500', 'text-white');
+                    tag.classList.add('bg-gray-200', 'text-gray-800');
+                } else {
+                    selectedTags.add(tagText);
+                    tag.classList.remove('bg-gray-200', 'text-gray-800');
+                    tag.classList.add('bg-blue-500', 'text-white');
+                }
+
+                updateCardVisibility();
+            });
+        });
+
+        // Clear tags handler
+        clearTagsButton.addEventListener('click', () => {
+            selectedTags.clear();
+            tags.forEach(tag => {
+                tag.classList.remove('bg-blue-500', 'text-white');
+                tag.classList.add('bg-gray-200', 'text-gray-800');
+            });
+            updateCardVisibility();
+        });
+
+        // Search input event listener
+        document.getElementById('searchInput').addEventListener('input', filterCards);
+
+        // Clear search handler
+        document.getElementById('clearSearch').addEventListener('click', function() {
+            document.getElementById('searchInput').value = '';
+            filterCards();
+        });
+    });
+</script>     
+<div class="container mx-auto px-4 py-8">
+	                                              
+	<div class="text-center mb-12">
+		                                                                  
+		<h1 class="text-4xl font-bold text-gray-800 mb-4">
+			                                  Directorio de herramientas de TSM                            
+		</h1>
+		                                                                  
+		<p class="text-gray-600">
+			                                  Conjunto de herramientas para mejorar tu experiencia de juego                            
+		</p>
+		                                                      
+	</div>
+	                                               
+	<div class="mb-6 text-center">
+		                                                                  
+		<div class="flex justify-center items-center space-x-2">
+			                                                  <input type="text" id="searchInput" placeholder="Buscar entre las 24 herramientas actuales" class="w-1/2 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" />                                                  
+			<button id="clearSearch" class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition duration-300">
+				                                          Limpiar                                    
+			</button>
+			                                                                          
+		</div>
+		                                                      
+	</div>
+	                                               
+	<div class="mb-8 text-center">
+		                                                                  
+		<div class="flex flex-wrap justify-center items-center gap-2">
+			                                                  <span class="tag px-3 py-1 bg-gray-200 text-gray-800 rounded-full cursor-pointer hover:bg-gray-300 transition duration-300">Alineaciones</span>                <span class="tag px-3 py-1 bg-gray-200 text-gray-800 rounded-full cursor-pointer hover:bg-gray-300 transition duration-300">Calculadoras</span>                <span class="tag px-3 py-1 bg-gray-200 text-gray-800 rounded-full cursor-pointer hover:bg-gray-300 transition duration-300">Herramientas staff</span>                <span class="tag px-3 py-1 bg-gray-200 text-gray-800 rounded-full cursor-pointer hover:bg-gray-300 transition duration-300">Información</span>                <span class="tag px-3 py-1 bg-gray-200 text-gray-800 rounded-full cursor-pointer hover:bg-gray-300 transition duration-300">Páginas interactivas</span>                                                  
+			<button title="Desmarcar todas las etiquetas" class="px-2 py-1 text-gray-600 hover:text-gray-800 transition duration-300" id="clearTags">
+				                                                              <svg fill="none" stroke="currentColor" viewbox="0 0 24 24" class="h-5 w-5">                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>                    </svg>                                                  
+			</button>
+			                                                                          
+		</div>
+		                                                      
+	</div>
+	                                               
+	<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+		                                                                  
+		<!--              Card: Actualizador de progresión              -->                                      
+		<div class="bg-white shadow-lg hover:shadow-xl transition-shadow duration-300 card">
+			                                                                                      
+			<div class="p-4">
+				                                                                                                          
+				<div class="flex items-center justify-between">
+					                                                                                                                              
+					<div class="flex items-center space-x-2">
+						                                                                                      <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewbox="0 0 24 24">                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>                            </svg>                                                                                      
+						<h2 class="text-lg font-semibold text-gray-800">
+							                                                                  Actualizador de progresión                                                            
+						</h2>
+						                                                                                                                                      
+					</div>
+					                                                                          <a href="https://www.tusoccermanager.com/h80-playerprogressionupdater-html" target="_blank" class="text-blue-600 hover:text-blue-800">                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M18 10l-6-6m0 0l-6 6m6-6v12"></path>                            </svg>                        </a>                                                              
+				</div>
+				                                                                                                          
+				<p class="text-gray-600 mb-4">
+					                                                  Controla el sistema de progresión de jugadores de una forma rápida y automatizada a final de cada temporada.                                            
+				</p>
+				                                                                                                          
+				<ul class="space-y-2 text-sm text-gray-600">
+					                                                                                                                              
+					<li class="flex items-center">
+						                                                          <span class="mr-2">•</span> Procesamiento rápido                                                  
+					</li>
+					                                                                                                                              
+					<li class="flex items-center">
+						                                                          <span class="mr-2">•</span> Automatización de la progresión                                                  
+					</li>
+					                                                                                                                  
+				</ul>
+				                                                                                              
+			</div>
+			                                                                          
+		</div>
+		                                                                   
+		<!--              Card: Alineaciones dinámicas              -->                                      
+		<div class="bg-white shadow-lg hover:shadow-xl transition-shadow duration-300 card">
+			                                                                                      
+			<div class="p-4">
+				                                                                                                          
+				<div class="flex items-center justify-between">
+					                                                                                                                              
+					<div class="flex items-center space-x-2">
+						                                                                                      <svg class="h-6 w-6 text-purple-600" fill="none" stroke="currentColor" viewbox="0 0 24 24">                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>                            </svg>                                                                                      
+						<h2 class="text-lg font-semibold text-gray-800">
+							                                                                  Alineaciones dinámicas                                                            
+						</h2>
+						                                                                                                                                      
+					</div>
+					                                                                          <a href="https://alantsm.github.io/visuallineup" target="_blank" class="text-purple-600 hover:text-purple-800">                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M18 10l-6-6m0 0l-6 6m6-6v12"></path>                            </svg>                        </a>                                                              
+				</div>
+				                                                                                                          
+				<p class="text-gray-600 mb-4">
+					                                                  Visualiza y edita tus alineaciones de forma interactiva.                                            
+				</p>
+				                                                                                                          
+				<ul class="space-y-2 text-sm text-gray-600">
+					                                                                                                                              
+					<li class="flex items-center">
+						                                                          <span class="mr-2">•</span> Editor visual de alineaciones                                                  
+					</li>
+					                                                                                                                              
+					<li class="flex items-center">
+						                                                          <span class="mr-2">•</span> Vista previa de tácticas                                                  
+					</li>
+					                                                                                                                  
+				</ul>
+				                                                                                              
+			</div>
+			                                                                          
+		</div>
+		                                                                   
+		<!--              Card: Buscador de jugadores              -->                                      
+		<div class="bg-white shadow-lg hover:shadow-xl transition-shadow duration-300 card">
+			                                                                                      
+			<div class="p-4">
+				                                                                                                          
+				<div class="flex items-center justify-between">
+					                                                                                                                              
+					<div class="flex items-center space-x-2">
+						                                                                                      <svg class="h-6 w-6 text-blue-500" fill="none" stroke="currentColor" viewbox="0 0 24 24">                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>                            </svg>                                                                                      
+						<h2 class="text-lg font-semibold text-gray-800">
+							                                                                  Buscador de jugadores                                                            
+						</h2>
+						                                                                                                                                      
+					</div>
+					                                                                          <a href="https://www.tusoccermanager.com/h89-playersearch-html" target="_blank" class="text-blue-600 hover:text-blue-800">                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M18 10l-6-6m0 0l-6 6m6-6v12"></path>                            </svg>                        </a>                                                              
+				</div>
+				                                                                                                          
+				<p class="text-gray-600 mb-4">
+					                                                  Encuentra rápidamente la información que necesitas sobre jugadores, equipos y más.                                            
+				</p>
+				                                                                                                          
+				<ul class="space-y-2 text-sm text-gray-600">
+					                                                                                                                              
+					<li class="flex items-center">
+						                                                          <span class="mr-2">•</span> Búsqueda avanzada por múltiples criterios                                                  
+					</li>
+					                                                                                                                              
+					<li class="flex items-center">
+						                                                          <span class="mr-2">•</span> Filtros personalizables                                                  
+					</li>
+					                                                                                                                  
+				</ul>
+				                                                                                              
+			</div>
+			                                                                          
+		</div>
+		                                                                   
+		<!--              Card: Calculadora de ingresos              -->                                      
+		<div class="bg-white shadow-lg hover:shadow-xl transition-shadow duration-300 card">
+			                                                                                      
+			<div class="p-4">
+				                                                                                                          
+				<div class="flex items-center justify-between">
+					                                                                                                                              
+					<div class="flex items-center space-x-2">
+						                                                                                      <svg class="h-6 w-6 text-yellow-500" fill="none" stroke="currentColor" viewbox="0 0 24 24">                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"></path>                            </svg>                                                                                      
+						<h2 class="text-lg font-semibold text-gray-800">
+							                                                                  Calculadora de ingresos                                                            
+						</h2>
+						                                                                                                                                      
+					</div>
+					                                                                          <a href="https://www.tusoccermanager.com/h53-incomecalculator-html" target="_blank" class="text-yellow-600 hover:text-yellow-800">                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M18 10l-6-6m0 0l-6 6m6-6v12"></path>                            </svg>                        </a>                                                              
+				</div>
+				                                                                                                          
+				<p class="text-gray-600 mb-4">
+					                                                  Indica los logros conseguidos por tu equipo y descubre qué premio te toca percibir.                                            
+				</p>
+				                                                                                                          
+				<ul class="space-y-2 text-sm text-gray-600">
+					                                                                                                                              
+					<li class="flex items-center">
+						                                                          <span class="mr-2">•</span> Cálculo instantáneo de premios                                                  
+					</li>
+					                                                                                                                              
+					<li class="flex items-center">
+						                                                          <span class="mr-2">•</span> Detalles de logros y recompensas                                                  
+					</li>
+					                                                                                                                  
+				</ul>
+				                                                                                              
+			</div>
+			                                                                          
+		</div>
+		                                                                   
+		<!--              Card: Calculadora de salarios              -->                                      
+		<div class="bg-white shadow-lg hover:shadow-xl transition-shadow duration-300 card">
+			                                                                                      
+			<div class="p-4">
+				                                                                                                          
+				<div class="flex items-center justify-between">
+					                                                                                                                              
+					<div class="flex items-center space-x-2">
+						                                                                                      <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewbox="0 0 24 24">                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>                            </svg>                                                                                      
+						<h2 class="text-lg font-semibold text-gray-800">
+							                                                                  Calculadora de salarios                                                            
+						</h2>
+						                                                                                                                                      
+					</div>
+					                                                                          <a href="https://www.tusoccermanager.com/h34-wagecalculator-html" target="_blank" class="text-green-600 hover:text-green-800">                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M18 10l-6-6m0 0l-6 6m6-6v12"></path>                            </svg>                        </a>                                                              
+				</div>
+				                                                                                                          
+				<p class="text-gray-600 mb-4">
+					                                                  Calcula y gestiona los salarios de tus jugadores de manera eficiente.                                            
+				</p>
+				                                                                                                          
+				<ul class="space-y-2 text-sm text-gray-600">
+					                                                                                                                              
+					<li class="flex items-center">
+						                                                          <span class="mr-2">•</span> Presupuesto salarial instantáneo                                                  
+					</li>
+					                                                                                                                              
+					<li class="flex items-center">
+						                                                          <span class="mr-2">•</span> Comparativas salariales entre jugadores                                                  
+					</li>
+					                                                                                                                  
+				</ul>
+				                                                                                              
+			</div>
+			                                                                          
+		</div>
+		                                                                   
+		<!--              Card: Central de datos              -->                                      
+		<div class="bg-white shadow-lg hover:shadow-xl transition-shadow duration-300 card">
+			                                                                                      
+			<div class="p-4">
+				                                                                                                          
+				<div class="flex items-center justify-between">
+					                                                                                                                              
+					<div class="flex items-center space-x-2">
+						                                                                                      <svg class="h-6 w-6 text-pink-600" fill="none" stroke="currentColor" viewbox="0 0 24 24">                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"></path>                            </svg>                                                                                      
+						<h2 class="text-lg font-semibold text-gray-800">
+							                                                                  Central de datos                                                            
+						</h2>
+						                                                                                                                                      
+					</div>
+					                                                                          <a href="https://alantsm.github.io/datacentre/" target="_blank" class="text-pink-600 hover:text-pink-800">                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M18 10l-6-6m0 0l-6 6m6-6v12"></path>                            </svg>                        </a>                                                              
+				</div>
+				                                                                                                          
+				<p class="text-gray-600 mb-4">
+					                                                  Analiza y compara estadísticas detalladas de jugadores para tomar mejores decisiones.                                            
+				</p>
+				                                                                                                          
+				<ul class="space-y-2 text-sm text-gray-600">
+					                                                                                                                              
+					<li class="flex items-center">
+						                                                          <span class="mr-2">•</span> Análisis de rendimiento individual                                                  
+					</li>
+					                                                                                                                              
+					<li class="flex items-center">
+						                                                          <span class="mr-2">•</span> Comparación de estadísticas por posición                                                  
+					</li>
+					                                                                                                                  
+				</ul>
+				                                                                                              
+			</div>
+			                                                                          
+		</div>
+		                                                                   
+		<!--              Card: Comparador de equipos y mánagers              -->                                      
+		<div class="bg-white shadow-lg hover:shadow-xl transition-shadow duration-300 card">
+			                                                                                      
+			<div class="p-4">
+				                                                                                                          
+				<div class="flex items-center justify-between">
+					                                                                                                                              
+					<div class="flex items-center space-x-2">
+						                                                                                      <svg class="h-6 w-6 text-purple-600" fill="none" stroke="currentColor" viewbox="0 0 24 24">                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>                            </svg>                                                                                      
+						<h2 class="text-lg font-semibold text-gray-800">
+							                                                                  Comparador de equipos y mánagers                                                            
+						</h2>
+						                                                                                                                                      
+					</div>
+					                                                                          <a href="https://www.tusoccermanager.com/h78-portalcomparator-html" target="_blank" class="text-purple-600 hover:text-purple-800">                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M18 10l-6-6m0 0l-6 6m6-6v12"></path>                            </svg>                        </a>                                                              
+				</div>
+				                                                                                                          
+				<p class="text-gray-600 mb-4">
+					                                                  Compara equipos, selecciones y mánagers.                                            
+				</p>
+				                                                                                                          
+				<ul class="space-y-2 text-sm text-gray-600">
+					                                                                                                                              
+					<li class="flex items-center">
+						                                                          <span class="mr-2">•</span> Comparación de logros                                                  
+					</li>
+					                                                                                                                              
+					<li class="flex items-center">
+						                                                          <span class="mr-2">•</span> Análisis de rendimiento                                                  
+					</li>
+					                                                                                                                  
+				</ul>
+				                                                                                              
+			</div>
+			                                                                          
+		</div>
+		                                                                   
+		<!--              Card: Comprobador de quinielas              -->                                      
+		<div class="bg-white shadow-lg hover:shadow-xl transition-shadow duration-300 card">
+			                                                                                      
+			<div class="p-4">
+				                                                                                                          
+				<div class="flex items-center justify-between">
+					                                                                                                                              
+					<div class="flex items-center space-x-2">
+						                                                                                      <svg class="h-6 w-6 text-emerald-600" fill="none" stroke="currentColor" viewbox="0 0 24 24">                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>                            </svg>                                                                                      
+						<h2 class="text-lg font-semibold text-gray-800">
+							                                                                  Comprobador de quinielas                                                            
+						</h2>
+						                                                                                                                                      
+					</div>
+					                                                                          <a href="https://www.tusoccermanager.com/h40-poolschecker-html" target="_blank" class="text-emerald-600 hover:text-emerald-800">                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M18 10l-6-6m0 0l-6 6m6-6v12"></path>                            </svg>                        </a>                                                              
+				</div>
+				                                                                                                          
+				<p class="text-gray-600 mb-4">
+					                                                  Verifica los resultados de las quinielas de forma rápida y sencilla.                                            
+				</p>
+				                                                                                                          
+				<ul class="space-y-2 text-sm text-gray-600">
+					                                                                                                                              
+					<li class="flex items-center">
+						                                                          <span class="mr-2">•</span> Resultados de quinielas verificados                                                  
+					</li>
+					                                                                                                                              
+					<li class="flex items-center">
+						                                                          <span class="mr-2">•</span> Sistema de premios automático                                                  
+					</li>
+					                                                                                                                  
+				</ul>
+				                                                                                              
+			</div>
+			                                                                          
+		</div>
+		                                                                   
+		<!--              Card: Consultor de enfrentamientos              -->                                      
+		<div class="bg-white shadow-lg hover:shadow-xl transition-shadow duration-300 card">
+			                                                                                      
+			<div class="p-4">
+				                                                                                                          
+				<div class="flex items-center justify-between">
+					                                                                                                                              
+					<div class="flex items-center space-x-2">
+						                                                                                      <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewbox="0 0 24 24">                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>                            </svg>                                                                                      
+						<h2 class="text-lg font-semibold text-gray-800">
+							                                                                  Consultor de enfrentamientos                                                            
+						</h2>
+						                                                                                                                                      
+					</div>
+					                                                                          <a href="https://www.tusoccermanager.com/h114-headtohead-html" target="_blank" class="text-blue-600 hover:text-blue-800">                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M18 10l-6-6m0 0l-6 6m6-6v12"></path>                            </svg>                        </a>                                                              
+				</div>
+				                                                                                                          
+				<p class="text-gray-600 mb-4">
+					                                                  Consulta enfrentamientos entre dos equipos desde la temporada 36. Incluye clasificación, registros detallados y gráficos.                                            
+				</p>
+				                                                                                                          
+				<ul class="space-y-2 text-sm text-gray-600">
+					                                                                                                                              
+					<li class="flex items-center">
+						                                                          <span class="mr-2">•</span> Historial completo de enfrentamientos                                                  
+					</li>
+					                                                                                                                              
+					<li class="flex items-center">
+						                                                          <span class="mr-2">•</span> Gráficos y estadísticas detalladas                                                  
+					</li>
+					                                                                                                                  
+				</ul>
+				                                                                                              
+			</div>
+			                                                                          
+		</div>
+		                                                                   
+		<!--              Card: Conversor de ratings de EA FC              -->                                      
+		<div class="bg-white shadow-lg hover:shadow-xl transition-shadow duration-300 card">
+			                                                                                      
+			<div class="p-4">
+				                                                                                                          
+				<div class="flex items-center justify-between">
+					                                                                                                                              
+					<div class="flex items-center space-x-2">
+						                                                                                      <svg class="h-6 w-6 text-gray-600" fill="none" stroke="currentColor" viewbox="0 0 24 24">                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>                            </svg>                                                                                      
+						<h2 class="text-lg font-semibold text-gray-800">
+							                                                                  Conversor de ratings de EA FC                                                            
+						</h2>
+						                                                                                                                                      
+					</div>
+					                                                                          <a href="https://www.tusoccermanager.com/h73-ratingconverter-html" target="_blank" class="text-gray-600 hover:text-gray-800">                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M18 10l-6-6m0 0l-6 6m6-6v12"></path>                            </svg>                        </a>                                                              
+				</div>
+				                                                                                                          
+				<p class="text-gray-600 mb-4">
+					                                                  Convierte plantillas de EA FC a formato ESMS.                                            
+				</p>
+				                                                                                                          
+				<ul class="space-y-2 text-sm text-gray-600">
+					                                                                                                                              
+					<li class="flex items-center">
+						                                                          <span class="mr-2">•</span> Fácil de usar y ahorra mucho tiempo                                                  
+					</li>
+					                                                                                                                              
+					<li class="flex items-center">
+						                                                          <span class="mr-2">•</span> Sistema de convocatorias de 25 jugadores                                                  
+					</li>
+					                                                                                                                  
+				</ul>
+				                                                                                              
+			</div>
+			                                                                          
+		</div>
+		                                                                   
+		<!--              Card: Conversor de ratings de eFootball              -->                                      
+		<div class="bg-white shadow-lg hover:shadow-xl transition-shadow duration-300 card">
+			                                                                                      
+			<div class="p-4">
+				                                                                                                          
+				<div class="flex items-center justify-between">
+					                                                                                                                              
+					<div class="flex items-center space-x-2">
+						                                                                                      <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewbox="0 0 24 24">                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>                            </svg>                                                                                      
+						<h2 class="text-lg font-semibold text-gray-800">
+							                                                                  Conversor de ratings de eFootball                                                            
+						</h2>
+						                                                                                                                                      
+					</div>
+					                                                                          <a href="https://www.tusoccermanager.com/h75-efratingconverter-html" target="_blank" class="text-blue-600 hover:text-blue-800">                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M18 10l-6-6m0 0l-6 6m6-6v12"></path>                            </svg>                        </a>                                                              
+				</div>
+				                                                                                                          
+				<p class="text-gray-600 mb-4">
+					                                                  Transforma los ratings de eFootball a formatos ESMS.                                            
+				</p>
+				                                                                                                          
+				<ul class="space-y-2 text-sm text-gray-600">
+					                                                                                                                              
+					<li class="flex items-center">
+						                                                          <span class="mr-2">•</span> Conversión rápida y precisa                                                  
+					</li>
+					                                                                                                                              
+					<li class="flex items-center">
+						                                                          <span class="mr-2">•</span> Compatible con múltiples formatos                                                  
+					</li>
+					                                                                                                                  
+				</ul>
+				                                                                                              
+			</div>
+			                                                                          
+		</div>
+		                                                                   
+		<!--              Card: Creador de alineaciones              -->                                      
+		<div class="bg-white shadow-lg hover:shadow-xl transition-shadow duration-300 card">
+			                                                                                      
+			<div class="p-4">
+				                                                                                                          
+				<div class="flex items-center justify-between">
+					                                                                                                                              
+					<div class="flex items-center space-x-2">
+						                                                                                      <svg class="h-6 w-6 text-indigo-600" fill="none" stroke="currentColor" viewbox="0 0 24 24">                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>                            </svg>                                                                                      
+						<h2 class="text-lg font-semibold text-gray-800">
+							                                                                  Creador de alineaciones                                                            
+						</h2>
+						                                                                                                                                      
+					</div>
+					                                                                          <a href="https://alantsm.github.io/expresslineupbuilder/" target="_blank" class="text-indigo-600 hover:text-indigo-800">                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M18 10l-6-6m0 0l-6 6m6-6v12"></path>                            </svg>                        </a>                                                              
+				</div>
+				                                                                                                          
+				<p class="text-gray-600 mb-4">
+					                                                  Diseña alineaciones personalizadas con múltiples opciones tácticas.                                            
+				</p>
+				                                                                                                          
+				<ul class="space-y-2 text-sm text-gray-600">
+					                                                                                                                              
+					<li class="flex items-center">
+						                                                          <span class="mr-2">•</span> Funcionalidades intuitivas                                                  
+					</li>
+					                                                                                                                              
+					<li class="flex items-center">
+						                                                          <span class="mr-2">•</span> Permite cargar alineaciones guardadas                                                  
+					</li>
+					                                                                                                                  
+				</ul>
+				                                                                                              
+			</div>
+			                                                                          
+		</div>
+		                                                                   
+		<!--              Card: Creador de plantillas              -->                                      
+		<div class="bg-white shadow-lg hover:shadow-xl transition-shadow duration-300 card">
+			                                                                                      
+			<div class="p-4">
+				                                                                                                          
+				<div class="flex items-center justify-between">
+					                                                                                                                              
+					<div class="flex items-center space-x-2">
+						                                                                                      <svg class="h-6 w-6 text-teal-600" fill="none" stroke="currentColor" viewbox="0 0 24 24">                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>                            </svg>                                                                                      
+						<h2 class="text-lg font-semibold text-gray-800">
+							                                                                  Creador de plantillas                                                            
+						</h2>
+						                                                                                                                                      
+					</div>
+					                                                                          <a href="https://www.tusoccermanager.com/h70-squadcreator-html" target="_blank" class="text-teal-600 hover:text-teal-800">                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M18 10l-6-6m0 0l-6 6m6-6v12"></path>                            </svg>                        </a>                                                              
+				</div>
+				                                                                                                          
+				<p class="text-gray-600 mb-4">
+					                                                  Crea plantillas personalizadas para tus equipos.                                            
+				</p>
+				                                                                                                          
+				<ul class="space-y-2 text-sm text-gray-600">
+					                                                                                                                              
+					<li class="flex items-center">
+						                                                          <span class="mr-2">•</span> Personalización avanzada                                                  
+					</li>
+					                                                                                                                              
+					<li class="flex items-center">
+						                                                          <span class="mr-2">•</span> Guardado y exportación de plantillas                                                  
+					</li>
+					                                                                                                                  
+				</ul>
+				                                                                                              
+			</div>
+			                                                                          
+		</div>
+		                                                                                                                        
+		<!--              Card: Generador de alineaciones              -->                                      
+		<div class="bg-white shadow-lg hover:shadow-xl transition-shadow duration-300 card">
+			                                                                                      
+			<div class="p-4">
+				                                                                                                          
+				<div class="flex items-center justify-between">
+					                                                                                                                              
+					<div class="flex items-center space-x-2">
+						                                                                                      <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewbox="0 0 24 24">                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>                            </svg>                                                                                      
+						<h2 class="text-lg font-semibold text-gray-800">
+							                                                                  Generador de alineaciones                                                            
+						</h2>
+						                                                                                                                                      
+					</div>
+					                                                                          <a href="https://www.tusoccermanager.com/h43-lineupgenerator-html" target="_blank" class="text-blue-600 hover:text-blue-800">                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M18 10l-6-6m0 0l-6 6m6-6v12"></path>                            </svg>                        </a>                                                              
+				</div>
+				                                                                                                          
+				<p class="text-gray-600 mb-4">
+					                                                  Genera alineaciones básicas y sin errores en segundos.                                            
+				</p>
+				                                                                                                          
+				<ul class="space-y-2 text-sm text-gray-600">
+					                                                                                                                              
+					<li class="flex items-center">
+						                                                          <span class="mr-2">•</span> Alineaciones optimizadas por posición                                                  
+					</li>
+					                                                                                                                              
+					<li class="flex items-center">
+						                                                          <span class="mr-2">•</span> Sistema de formación táctica                                                  
+					</li>
+					                                                                                                                  
+				</ul>
+				                                                                                              
+			</div>
+			                                                                          
+		</div>
+		                                                                   
+		<!--              Card: Gestor de Fit              -->                                      
+		<div class="bg-white shadow-lg hover:shadow-xl transition-shadow duration-300 card">
+			                                                                                      
+			<div class="p-4">
+				                                                                                                          
+				<div class="flex items-center justify-between">
+					                                                                                                                              
+					<div class="flex items-center space-x-2">
+						                                                                                      <svg class="h-6 w-6 text-lime-600" fill="none" stroke="currentColor" viewbox="0 0 24 24">                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>                            </svg>                                                                                      
+						<h2 class="text-lg font-semibold text-gray-800">
+							                                                                  Gestor de Fit                                                            
+						</h2>
+						                                                                                                                                      
+					</div>
+					                                                                          <a href="https://www.tusoccermanager.com/h69-fitnessmanager-html" target="_blank" class="text-lime-600 hover:text-lime-800">                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M18 10l-6-6m0 0l-6 6m6-6v12"></path>                            </svg>                        </a>                                                              
+				</div>
+				                                                                                                          
+				<p class="text-gray-600 mb-4">
+					                                                  Aumenta rápidamente el valor de Fitness de los jugadores de una o más plantillas.                                            
+				</p>
+				                                                                                                          
+				<ul class="space-y-2 text-sm text-gray-600">
+					                                                                                                                              
+					<li class="flex items-center">
+						                                                          <span class="mr-2">•</span> Carga y descarga de plantillas                                                  
+					</li>
+					                                                                                                                              
+					<li class="flex items-center">
+						                                                          <span class="mr-2">•</span> Fácil de usar y procesamiento rápido                                                  
+					</li>
+					                                                                                                                  
+				</ul>
+				                                                                                              
+			</div>
+			                                                                          
+		</div>
+		                                                                   
+		<!--              Card: Gestor de traspasos              -->                                      
+		<div class="bg-white shadow-lg hover:shadow-xl transition-shadow duration-300 card">
+			                                                                                      
+			<div class="p-4">
+				                                                                                                          
+				<div class="flex items-center justify-between">
+					                                                                                                                              
+					<div class="flex items-center space-x-2">
+						                                                                                      <svg class="h-6 w-6 text-orange-600" fill="none" stroke="currentColor" viewbox="0 0 24 24">                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>                            </svg>                                                                                      
+						<h2 class="text-lg font-semibold text-gray-800">
+							                                                                  Gestor de traspasos                                                            
+						</h2>
+						                                                                                                                                      
+					</div>
+					                                                                          <a href="https://www.tusoccermanager.com/h45-transfermanager-html" target="_blank" class="text-orange-600 hover:text-orange-800">                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M18 10l-6-6m0 0l-6 6m6-6v12"></path>                            </svg>                        </a>                                                              
+				</div>
+				                                                                                                          
+				<p class="text-gray-600 mb-4">
+					                                                  Permite traspasar jugadores de una plantilla a otra de forma muy sencilla.                                            
+				</p>
+				                                                                                                          
+				<ul class="space-y-2 text-sm text-gray-600">
+					                                                                                                                              
+					<li class="flex items-center">
+						                                                          <span class="mr-2">•</span> Transferencias rápidas y eficientes                                                  
+					</li>
+					                                                                                                                              
+					<li class="flex items-center">
+						                                                          <span class="mr-2">•</span> Gestión simplificada de plantillas                                                  
+					</li>
+					                                                                                                                  
+				</ul>
+				                                                                                              
+			</div>
+			                                                                          
+		</div>
+		                                                                   
+		<!--              Card: Narrador dinámico              -->                                      
+		<div class="bg-white shadow-lg hover:shadow-xl transition-shadow duration-300 card">
+			                                                                                      
+			<div class="p-4">
+				                                                                                                          
+				<div class="flex items-center justify-between">
+					                                                                                                                              
+					<div class="flex items-center space-x-2">
+						                                                                                      <svg class="h-6 w-6 text-purple-600" fill="none" stroke="currentColor" viewbox="0 0 24 24">                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>                            </svg>                                                                                      
+						<h2 class="text-lg font-semibold text-gray-800">
+							                                                                  Narrador dinámico                                                            
+						</h2>
+						                                                                                                                                      
+					</div>
+					                                                                          <a href="https://alantsm.github.io/commentarydisplay/" target="_blank" class="text-purple-600 hover:text-purple-800">                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M18 10l-6-6m0 0l-6 6m6-6v12"></path>                            </svg>                        </a>                                                              
+				</div>
+				                                                                                                          
+				<p class="text-gray-600 mb-4">
+					                                                  Genera narraciones personalizadas para tus partidos.                                            
+				</p>
+				                                                                                                          
+				<ul class="space-y-2 text-sm text-gray-600">
+					                                                                                                                              
+					<li class="flex items-center">
+						                                                          <span class="mr-2">•</span> Textos dinámicos y realistas                                                  
+					</li>
+					                                                                                                                              
+					<li class="flex items-center">
+						                                                          <span class="mr-2">•</span> Integración con resultados de partidos                                                  
+					</li>
+					                                                                                                                  
+				</ul>
+				                                                                                              
+			</div>
+			                                                                          
+		</div>
+		                                                                   
+		<!--              Card: Preparación de partidos para simular              -->                                      
+		<div class="bg-white shadow-lg hover:shadow-xl transition-shadow duration-300 card">
+			                                                                                      
+			<div class="p-4">
+				                                                                                                          
+				<div class="flex items-center justify-between">
+					                                                                                                                              
+					<div class="flex items-center space-x-2">
+						                                                                                      <svg class="h-6 w-6 text-indigo-600" fill="none" stroke="currentColor" viewbox="0 0 24 24">                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>                            </svg>                                                                                      
+						<h2 class="text-lg font-semibold text-gray-800">
+							                                                                  Preparación de partidos para simular                                                            
+						</h2>
+						                                                                                                                                      
+					</div>
+					                                                                          <a href="https://alantsm.github.io/readylineup" target="_blank" class="text-indigo-600 hover:text-indigo-800">                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M18 10l-6-6m0 0l-6 6m6-6v12"></path>                            </svg>                        </a>                                                              
+				</div>
+				                                                                                                          
+				<p class="text-gray-600 mb-4">
+					                                                  Valida todas las alineaciones enviadas instantáneamente para agilizar tiempo en la tarea de simular.                                            
+				</p>
+				                                                                                                          
+				<ul class="space-y-2 text-sm text-gray-600">
+					                                                                                                                              
+					<li class="flex items-center">
+						                                                          <span class="mr-2">•</span> Sistema de alineaciones aleatorias para ausencias                                                  
+					</li>
+					                                                                                                                              
+					<li class="flex items-center">
+						                                                          <span class="mr-2">•</span> Opción de descargar adicionalmente las plantillas de Dropbox                                                  
+					</li>
+					                                                                                                                  
+				</ul>
+				                                                                                              
+			</div>
+			                                                                          
+		</div>
+		                                                                   
+		<!--              Card: Preparación de temas de alineaciones              -->                                      
+		<div class="bg-white shadow-lg hover:shadow-xl transition-shadow duration-300 card">
+			                                                                                      
+			<div class="p-4">
+				                                                                                                          
+				<div class="flex items-center justify-between">
+					                                                                                                                              
+					<div class="flex items-center space-x-2">
+						                                                                                      <svg class="h-6 w-6 text-purple-600" fill="none" stroke="currentColor" viewbox="0 0 24 24">                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>                            </svg>                                                                                      
+						<h2 class="text-lg font-semibold text-gray-800">
+							                                                                  Preparación de temas de alineaciones                                                            
+						</h2>
+						                                                                                                                                      
+					</div>
+					                                                                          <a href="https://www.tusoccermanager.com/h104-lineupthreadcode-html" target="_blank" class="text-purple-600 hover:text-purple-800">                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M18 10l-6-6m0 0l-6 6m6-6v12"></path>                            </svg>                        </a>                                                              
+				</div>
+				                                                                                                          
+				<p class="text-gray-600 mb-4">
+					                                                  Ahorra tiempo preparando el mensaje del tema de alineaciones.                                            
+				</p>
+				                                                                                                          
+				<ul class="space-y-2 text-sm text-gray-600">
+					                                                                                                                              
+					<li class="flex items-center">
+						                                                          <span class="mr-2">•</span> Selección de partidos con un par de clicks                                                  
+					</li>
+					                                                                                                                              
+					<li class="flex items-center">
+						                                                          <span class="mr-2">•</span> Enlaces a todas las herramientas incluidos                                                  
+					</li>
+					                                                                                                                  
+				</ul>
+				                                                                                              
+			</div>
+			                                                                          
+		</div>
+		       
+		<!--              Card: Procesador de árbitros              -->                                      
+		<div class="bg-white shadow-lg hover:shadow-xl transition-shadow duration-300 card">
+			                                                                                      
+			<div class="p-4">
+				                                                                                                          
+				<div class="flex items-center justify-between">
+					                                                                                                                              
+					<div class="flex items-center space-x-2">
+						                                                                                      <svg class="h-6 w-6 text-gray-600" fill="none" stroke="currentColor" viewbox="0 0 24 24">                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>                            </svg>                                                                                      
+						<h2 class="text-lg font-semibold text-gray-800">
+							                                                                 Procesador de árbitros                                                            
+						</h2>
+						                                                                                                                                      
+					</div>
+					                                                                          <a href="https://www.tusoccermanager.com/h105-refereeconverter-html" target="_blank" class="text-gray-600 hover:text-gray-800">                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M18 10l-6-6m0 0l-6 6m6-6v12"></path>                            </svg>                        </a>                                                              
+				</div>
+				                                                                                                          
+				<p class="text-gray-600 mb-4">
+					                                                  Consigue una lista de árbitros para añadir a tus simulaciones en unos pocos segundos.                                            
+				</p>
+				                                                                                                          
+				<ul class="space-y-2 text-sm text-gray-600">
+					                                                                                                                              
+					<li class="flex items-center">
+						                                                          <span class="mr-2">•</span> Árbitros reales                                                  
+					</li>
+					                                                                                                                              
+					<li class="flex items-center">
+						                                                          <span class="mr-2">•</span> Nivel de rigurosidad diferente para cada árbitro                                                  
+					</li>
+					                                                                                                                  
+				</ul>
+				                                                                                              
+			</div>
+			                                                                          
+		</div>
+		                                                                   
+		<!--              Card: Spoilers para el foro              -->                                      
+		<div class="bg-white shadow-lg hover:shadow-xl transition-shadow duration-300 card">
+			                                                                                      
+			<div class="p-4">
+				                                                                                                          
+				<div class="flex items-center justify-between">
+					                                                                                                                              
+					<div class="flex items-center space-x-2">
+						                                                                                      <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewbox="0 0 24 24">                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>                            </svg>                                                                                      
+						<h2 class="text-lg font-semibold text-gray-800">
+							                                                                  Spoilers para el foro                                                            
+						</h2>
+						                                                                                                                                      
+					</div>
+					                                                                          <a href="https://www.tusoccermanager.com/h98-spoilerforforum-html" target="_blank" class="text-blue-600 hover:text-blue-800">                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M18 10l-6-6m0 0l-6 6m6-6v12"></path>                            </svg>                        </a>                                                              
+				</div>
+				                                                                                                          
+				<p class="text-gray-600 mb-4">
+					                                                  Coloca los partidos, los informes y otros datos en un spoiler en segundos.                                            
+				</p>
+				                                                                                                          
+				<ul class="space-y-2 text-sm text-gray-600">
+					                                                                                                                              
+					<li class="flex items-center">
+						                                                          <span class="mr-2">•</span> Presentación ordenada de la información                                                  
+					</li>
+					                                                                                                                              
+					<li class="flex items-center">
+						                                                          <span class="mr-2">•</span> Escudos incluidos en el título de los spoilers de partidos                                                  
+					</li>
+					                                                                                                                  
+				</ul>
+				                                                                                              
+			</div>
+			                                                                          
+		</div>
+		                                                                   
+		<!--              Card: Tasador de jugadores              -->                                      
+		<div class="bg-white shadow-lg hover:shadow-xl transition-shadow duration-300 card">
+			                                                                                      
+			<div class="p-4">
+				                                                                                                          
+				<div class="flex items-center justify-between">
+					                                                                                                                              
+					<div class="flex items-center space-x-2">
+						                                                                                      <svg class="h-6 w-6 text-indigo-600" fill="none" stroke="currentColor" viewbox="0 0 24 24">                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>                            </svg>                                                                                      
+						<h2 class="text-lg font-semibold text-gray-800">
+							                                                                  Tasador de jugadores                                                            
+						</h2>
+						                                                                                                                                      
+					</div>
+					                                                                          <a href="https://www.tusoccermanager.com/h67-playerevaluator-html" target="_blank" class="text-indigo-600 hover:text-indigo-800">                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M18 10l-6-6m0 0l-6 6m6-6v12"></path>                            </svg>                        </a>                                                              
+				</div>
+				                                                                                                          
+				<p class="text-gray-600 mb-4">
+					                                                  Descubre el valor estimado de un jugador o de una plantilla entera.                                            
+				</p>
+				                                                                                                          
+				<ul class="space-y-2 text-sm text-gray-600">
+					                                                                                                                              
+					<li class="flex items-center">
+						                                                          <span class="mr-2">•</span> Valoración individual y de plantillas                                                  
+					</li>
+					                                                                                                                              
+					<li class="flex items-center">
+						                                                          <span class="mr-2">•</span> Estimaciones precisas y rápidas                                                  
+					</li>
+					                                                                                                                  
+				</ul>
+				                                                                                              
+			</div>
+			                                                                          
+		</div>
+		                                                                   
+		<!--              Card: Tutorial dinámico              -->                                      
+		<div class="bg-white shadow-lg hover:shadow-xl transition-shadow duration-300 card">
+			                                                                                      
+			<div class="p-4">
+				                                                                                                          
+				<div class="flex items-center justify-between">
+					                                                                                                                              
+					<div class="flex items-center space-x-2">
+						                                                                                      <svg class="h-6 w-6 text-cyan-600" fill="none" stroke="currentColor" viewbox="0 0 24 24">                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"></path>                            </svg>                                                                                      
+						<h2 class="text-lg font-semibold text-gray-800">
+							                                                                  Tutorial dinámico                                                            
+						</h2>
+						                                                                                                                                      
+					</div>
+					                                                                          <a href="https://www.tusoccermanager.com/h65-tsmtutorial-html" target="_blank" class="text-cyan-600 hover:text-cyan-800">                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M18 10l-6-6m0 0l-6 6m6-6v12"></path>                            </svg>                        </a>                                                              
+				</div>
+				                                                                                                          
+				<p class="text-gray-600 mb-4">
+					                                                  Explica cómo funciona la liga virtual de TSM de una forma dinámica.                                            
+				</p>
+				                                                                                                          
+				<ul class="space-y-2 text-sm text-gray-600">
+					                                                                                                                              
+					<li class="flex items-center">
+						                                                          <span class="mr-2">•</span> Guía paso a paso                                                  
+					</li>
+					                                                                                                                              
+					<li class="flex items-center">
+						                                                          <span class="mr-2">•</span> Asistente virtual para soporte                                                  
+					</li>
+					                                                                                                                  
+				</ul>
+				                                                                                              
+			</div>
+			                                                                          
+		</div>
+		                                                                   
+		<!--              Card: Validador de alineaciones              -->                                      
+		<div class="bg-white shadow-lg hover:shadow-xl transition-shadow duration-300 card">
+			                                                                                      
+			<div class="p-4">
+				                                                                                                          
+				<div class="flex items-center justify-between">
+					                                                                                                                              
+					<div class="flex items-center space-x-2">
+						                                                                                      <svg class="h-6 w-6 text-red-600" fill="none" stroke="currentColor" viewbox="0 0 24 24">                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>                            </svg>                                                                                      
+						<h2 class="text-lg font-semibold text-gray-800">
+							                                                                  Validador de alineaciones                                                            
+						</h2>
+						                                                                                                                                      
+					</div>
+					                                                                          <a href="https://www.tusoccermanager.com/h35-lineupvalidator-html" target="_blank" class="text-red-600 hover:text-red-800">                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M18 10l-6-6m0 0l-6 6m6-6v12"></path>                            </svg>                        </a>                                                              
+				</div>
+				                                                                                                          
+				<p class="text-gray-600 mb-4">
+					                                                  Verifica que tus alineaciones cumplan con las reglas del juego.                                            
+				</p>
+				                                                                                                          
+				<ul class="space-y-2 text-sm text-gray-600">
+					                                                                                                                              
+					<li class="flex items-center">
+						                                                          <span class="mr-2">•</span> Verificación de errores                                                  
+					</li>
+					                                                                                                                              
+					<li class="flex items-center">
+						                                                          <span class="mr-2">•</span> Sugerencias de correciones                                                  
+					</li>
+					                                                                                                                  
+				</ul>
+				                                                                                              
+			</div>
+			                                                                          
+		</div>
+		                                                      
+	</div>
+	                                  
+</div>
+<footer class="py-6 bg-gray-100 text-center text-gray-600 border-t border-gray-200">
+    <div class="container mx-auto px-4">
+        <div class="flex justify-center space-x-6 text-sm mb-4">
+            <a class="text-blue-600 hover:text-blue-800 transition duration-300 flex items-center" href="https://www.tusoccermanager.com/h56-minigames-html">
+                <svg fill="none" stroke="currentColor" viewbox="0 0 24 24" class="h-5 w-5 mr-1">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 10v4a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                Directorio de juegos
+            </a>
+            <a class="text-blue-600 hover:text-blue-800 transition duration-300 flex items-center" href="https://www.tusoccermanager.com/">
+                <svg fill="none" stroke="currentColor" viewbox="0 0 24 24" class="h-5 w-5 mr-1">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                </svg>
+                Volver al foro
+            </a>
+            <a class="text-blue-600 hover:text-blue-800 transition duration-300 flex items-center" href="https://www.tusoccermanager.com/portal">
+                <svg fill="none" stroke="currentColor" viewbox="0 0 24 24" class="h-5 w-5 mr-1">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M18 10l-6-6m0 0l-6 6m6-6v12"></path>
+                </svg>
+                Visitar portal
+            </a>
+        </div>
+        <div class="text-xs text-gray-500 text-center">
+            Todas las herramientas han sido desarrolladas por TSM.
+        </div>
+    </div>
+</footer>
